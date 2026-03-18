@@ -10,11 +10,14 @@ public class TenantWebInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler){
+        if (UserContext.getTenantID() != null) {
+            return true;
+        }
 
         String tenantId = request.getHeader("tenant-id");
         System.out.println("📬 拦截器抓取到的 Header tenant-id 为: " + tenantId);
         if (tenantId == null || tenantId.isEmpty()) {
-            tenantId = "000000";
+            UserContext.setTenantID(tenantId);
         }
 
         UserContext.setTenantID(tenantId);
