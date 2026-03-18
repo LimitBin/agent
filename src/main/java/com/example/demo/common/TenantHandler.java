@@ -12,7 +12,7 @@ public class TenantHandler implements TenantLineHandler{
     //获取租户字段名
     @Override
     public Expression getTenantId() {
-        String tenantId = UserContext.getTenantID();
+        String tenantId = UserContext.getTenantId();
         if (tenantId == null || tenantId.isEmpty()) {
             tenantId = "000000";
         }

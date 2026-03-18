@@ -4,6 +4,7 @@ import com.example.demo.common.UserContext;
 import com.example.demo.entity.User;
 import com.example.demo.mapper.UserMapper;
 import jakarta.annotation.Resource;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,7 +14,8 @@ import java.util.List;
 public class TestController {
     @Resource
     private UserMapper userMapper;
-
+    @Resource
+    private RedisTemplate<String,Object> redisTemplate;
 
     @GetMapping("/test/user/info")
     public User getInfo() {
@@ -25,5 +27,15 @@ public class TestController {
     public List<User> getUsers() {
         System.out.println("🚀 成功触发了接口！正在执行数据库查询...");
         return userMapper.selectList(null);
+    }
+
+    @GetMapping("/redis-test")
+    public String test() {
+        User user = new User();
+        user.setAccount("bin666");
+        user.setRoleName("admin");
+
+        redisTemplate.opsForValue().set("user",user);
+        return "success";
     }
 }

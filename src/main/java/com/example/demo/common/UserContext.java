@@ -37,7 +37,8 @@ public class UserContext {
 
     }
 
-    public static String getTenantID() {
+    public static String getTenantId() {
+
         return TENANT_HOLDER.get();
     }
 
