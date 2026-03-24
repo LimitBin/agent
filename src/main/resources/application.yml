@@ -4,9 +4,9 @@ spring:
     name:demo
   datasource:
       driver-class-name: com.mysql.jdbc.Driver
-      url: jdbc:mysql://localhost:3306/journal?useSSL=false&serverTimezone=UTC
+      url: jdbc:mysql://localhost:3307/demo?useSSL=false&serverTimezone=UTC
       username: root
-      password: 123456
+      password: root
   data:
     redis:
       host: localhost

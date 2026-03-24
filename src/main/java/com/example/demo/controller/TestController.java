@@ -33,7 +33,7 @@ public class TestController {
     public String test() {
         User user = new User();
         user.setAccount("bin666");
-        user.setRoleName("admin");
+        user.setName("admin");
 
         redisTemplate.opsForValue().set("user",user);
         return "success";

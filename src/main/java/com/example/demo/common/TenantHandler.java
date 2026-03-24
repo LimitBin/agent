@@ -14,7 +14,7 @@ public class TenantHandler implements TenantLineHandler{
     public Expression getTenantId() {
         String tenantId = UserContext.getTenantId();
         if (tenantId == null || tenantId.isEmpty()) {
-            tenantId = "000000";
+            tenantId = "-1";
         }
         return  new StringValue(tenantId);
     }

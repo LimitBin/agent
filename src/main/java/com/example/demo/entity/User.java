@@ -12,8 +12,8 @@ import lombok.Data;
 public class User {
 
     @TableId
-    private Long userId;
+    private Long id;
     private String account;
     private String tenantId; // 核心：多租户ID
-    private String roleName;
+    private String name;
 }

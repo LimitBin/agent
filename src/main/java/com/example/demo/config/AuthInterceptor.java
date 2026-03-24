@@ -42,7 +42,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
             // 3. 将解析出的身份存入 UserContext (ThreadLocal)
             User user = new User();
-            user.setUserId(Long.valueOf(claims.get("user_id").toString()));
+            user.setId(Long.valueOf(claims.get("user_id").toString()));
             user.setTenantId(claims.get("tenant_id").toString());
             user.setAccount(claims.getSubject());
 
