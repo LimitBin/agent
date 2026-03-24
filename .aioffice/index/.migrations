@@ -1,5 +1,0 @@
-add_signature_column
-delete_duplicate_code_snippets
-add_enhanced_signature_columns
-add_path_index
-lancedb_sqlite_artifact_id_column
