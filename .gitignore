@@ -46,3 +46,4 @@ target/
 
 # 敏感配置文件风险预警（如果你有核心密钥，建议排除或脱敏）
 # application-prod.yml
+.aioffice/
