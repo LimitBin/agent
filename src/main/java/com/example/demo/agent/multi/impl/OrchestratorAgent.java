@@ -11,6 +11,7 @@ import dev.langchain4j.data.message.UserMessage;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import dev.langchain4j.model.output.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -22,14 +23,23 @@ public class OrchestratorAgent {
     @Autowired
     private List<BaseAgent> agents;
 
-    OpenAiChatModel model = OpenAiChatModel.builder()
-            .apiKey("sk-ff2057b0bbc2454fb3642a9f3ef59ac6")
-            .baseUrl("https://api.deepseek.com")
-            .modelName("deepseek-chat")
-            .temperature(0.7)
-            .build();
+    @Value("${agent.deepseek.api-key}")
+    private String apiKey;
+
+    @Value("${agent.deepseek.base-url}")
+    private String baseUrl;
+
+    @Value("${agent.deepseek.model-name}")
+    private String modelName;
 
     public String orchestrate(String question) {
+        OpenAiChatModel model = OpenAiChatModel.builder()
+                .apiKey(apiKey)
+                .baseUrl(baseUrl)
+                .modelName(modelName)
+                .temperature(0.7)
+                .build();
+
         //遍历，获取agent列表
         StringBuilder agentDesc = new StringBuilder();
         for (BaseAgent agent : agents) {

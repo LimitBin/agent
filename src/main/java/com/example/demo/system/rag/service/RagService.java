@@ -14,8 +14,10 @@ import dev.langchain4j.service.AiServices;
 import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
 import dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import jakarta.annotation.PostConstruct;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -23,17 +25,30 @@ import java.io.IOException;
 @Service
 public class RagService {
 
-    private final EmbeddingModel embeddingModel;
-    private final EmbeddingStore<TextSegment> embeddingStore;
-    private final OpenAiChatModel chatModel;
-    private final DocumentParser documentParser;
-    private final DocumentSplitter documentSplitter;
-    private final Assistant assistant;
+    @Value("${agent.deepseek.api-key}")
+    private String deepseekApiKey;
 
-    public RagService() {
+    @Value("${agent.deepseek.base-url}")
+    private String deepseekBaseUrl;
+
+    @Value("${agent.deepseek.model-name}")
+    private String deepseekModelName;
+
+    @Value("${agent.siliconflow.api-key}")
+    private String siliconflowApiKey;
+
+    private EmbeddingModel embeddingModel;
+    private EmbeddingStore<TextSegment> embeddingStore;
+    private OpenAiChatModel chatModel;
+    private DocumentParser documentParser;
+    private DocumentSplitter documentSplitter;
+    private Assistant assistant;
+
+    @PostConstruct
+    public void init() {
         // Embedding 模型（硅基流动）
         this.embeddingModel = OpenAiEmbeddingModel.builder()
-                .apiKey("sk-mdxbjywnxlngogjkozlvjealxtrdbqxbikvcobxhraabyosa")
+                .apiKey(siliconflowApiKey)
                 .baseUrl("https://api.siliconflow.cn/v1")
                 .modelName("BAAI/bge-m3")
                 .build();
@@ -43,9 +58,9 @@ public class RagService {
 
         // 对话模型（DeepSeek）
         this.chatModel = OpenAiChatModel.builder()
-                .apiKey("sk-ff2057b0bbc2454fb3642a9f3ef59ac6")
-                .baseUrl("https://api.deepseek.com")
-                .modelName("deepseek-chat")
+                .apiKey(deepseekApiKey)
+                .baseUrl(deepseekBaseUrl)
+                .modelName(deepseekModelName)
                 .temperature(0.7)
                 .build();
 

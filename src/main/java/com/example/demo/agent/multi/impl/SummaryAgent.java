@@ -7,6 +7,7 @@ import dev.langchain4j.data.message.SystemMessage;
 import dev.langchain4j.data.message.UserMessage;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import dev.langchain4j.model.output.Response;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -14,6 +15,15 @@ import java.util.List;
 
 @Component
 public class SummaryAgent extends BaseAgent {
+
+    @Value("${agent.deepseek.api-key}")
+    private String apiKey;
+
+    @Value("${agent.deepseek.base-url}")
+    private String baseUrl;
+
+    @Value("${agent.deepseek.model-name}")
+    private String modelName;
 
     public String getName(){
         return "summary";
@@ -31,9 +41,9 @@ public class SummaryAgent extends BaseAgent {
     public String execute(String task) {
         //构建模型
         OpenAiChatModel model = OpenAiChatModel.builder()
-                .apiKey("sk-ff2057b0bbc2454fb3642a9f3ef59ac6")
-                .baseUrl("https://api.deepseek.com")
-                .modelName("deepseek-chat")
+                .apiKey(apiKey)
+                .baseUrl(baseUrl)
+                .modelName(modelName)
                 .temperature(0.7)
                 .build();
         //构建消息

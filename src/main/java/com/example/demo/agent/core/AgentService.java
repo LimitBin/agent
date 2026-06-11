@@ -8,6 +8,7 @@ import dev.langchain4j.data.message.*;
 import dev.langchain4j.model.openai.OpenAiChatModel;
 import dev.langchain4j.model.output.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -20,6 +21,15 @@ public class AgentService {
 
     @Autowired
     private ToolRegistry toolRegistry;
+
+    @Value("${agent.deepseek.api-key}")
+    private String apiKey;
+
+    @Value("${agent.deepseek.base-url}")
+    private String baseUrl;
+
+    @Value("${agent.deepseek.model-name}")
+    private String modelName;
 
     // 推理步骤记录
     public static class ReasoningStep {
@@ -38,9 +48,9 @@ public class AgentService {
     // 构建 LLM
     private OpenAiChatModel buildModel() {
         return OpenAiChatModel.builder()
-                .apiKey("sk-ff2057b0bbc2454fb3642a9f3ef59ac6")
-                .baseUrl("https://api.deepseek.com")
-                .modelName("deepseek-chat")
+                .apiKey(apiKey)
+                .baseUrl(baseUrl)
+                .modelName(modelName)
                 .temperature(0.7)
                 .build();
     }
