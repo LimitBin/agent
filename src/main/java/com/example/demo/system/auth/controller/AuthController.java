@@ -1,39 +1,32 @@
 package com.example.demo.system.auth.controller;
 
-import com.example.demo.common.utils.JwtUtil;
 import com.example.demo.common.api.Result;
 import com.example.demo.system.auth.dto.LoginDTO;
-import com.example.demo.system.user.entity.User;
-import com.example.demo.system.user.mapper.UserMapper;
-import jakarta.annotation.Resource;
+import com.example.demo.system.auth.service.AuthService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
-import java.util.Map;
+
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
-    @Resource
-    private UserMapper userMapper;
-    
+
+
+    @Autowired
+    private AuthService authService;
+
+    @PostMapping("/register")
+    public Result register(@RequestBody LoginDTO loginDTO){
+        return  authService.register(loginDTO);
+    }
+
     @PostMapping("/login")
     public Result<String> login(@RequestBody LoginDTO loginDTO) {
-        String account = loginDTO.getAccount();
-        
-        User user = userMapper.selectUserForLogin(account);
-        if (user == null) {
-            return Result.error("账号不存在");
-        }
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("user_id", user.getId());
-        claims.put("tenant_id", user.getTenantId());
-
-        String token = JwtUtil.createToken(claims, account);
-        return Result.success("登录成功", token);
+        return authService.login(loginDTO);
     }
 }

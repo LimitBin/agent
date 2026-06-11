@@ -9,7 +9,7 @@ import lombok.Data;
  * 用户身份模型（你的专属名牌）
  */
 @Data
-@TableName("blade_user")
+@TableName("user")
 public class User implements IUser {
 
     @TableId
@@ -17,4 +17,5 @@ public class User implements IUser {
     private String account;
     private String tenantId; // 核心：多租户ID
     private String name;
+    private String password;
 }

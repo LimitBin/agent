@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 
@@ -15,13 +16,17 @@ import java.util.Base64;
 @Component
 public class AuthInterceptor implements HandlerInterceptor {
 
-    // 必须和 JwtUtil 里的密钥一模一样！
-    private static final String SECRET = "Ym9sdC1mcmVlLXNlY3VyZS1hdXRoLWZvci1iaW4tZGV2ZWxvcG1lbnQ=";
+    @Value("${jwt.secret}")
+    private  String secret ;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        // 1. 从 Header 获取 Token
-        String token = request.getHeader("X-Auth-Token");
+        // 1. 从 Authorization Header 获取 Token
+        String authHeader = request.getHeader("Authorization");
+        String token = null;
+        if (authHeader != null && authHeader.toLowerCase().startsWith("bearer ")) {
+            token = authHeader.substring(7);
+        }
 
         // 如果没有 Token，直接拦住并返回 401
         if (token == null || token.isEmpty()) {
@@ -32,7 +37,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
         try {
             // 2. 解析 JWT
-            SecretKey key = Keys.hmacShaKeyFor(Base64.getDecoder().decode(SECRET));
+            SecretKey key = Keys.hmacShaKeyFor(Base64.getDecoder().decode(secret));
             Claims claims = Jwts.parserBuilder()
                     .setSigningKey(key)
                     .build()

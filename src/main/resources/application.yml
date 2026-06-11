@@ -1,12 +1,11 @@
-
 spring:
   application:
-    name:demo
+    name: demo
   datasource:
-      driver-class-name: com.mysql.jdbc.Driver
-      url: jdbc:mysql://localhost:3307/demo?useSSL=false&serverTimezone=UTC
-      username: root
-      password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/demo?useSSL=false&serverTimezone=UTC
+    username: root
+    password: 123456
   data:
     redis:
       host: localhost
@@ -15,6 +14,22 @@ spring:
       lettuce:
         pool:
           max-active: 8
+
 mybatis-plus:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    configuration:
+      log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+jwt:
+    secret: Ym9sdC1mcmVlLXNlY3VyZS1hdXRoLWZvci1iaW4tZGV2ZWxvcG1lbnQ=
+
+langchain4j:
+  open-ai:
+    chat-model:
+      api-key: sk-ff2057b0bbc2454fb3642a9f3ef59ac6
+      base-url: https://api.deepseek.com
+      model-name: deepseek-chat
+      temperature: 0.7
+    embedding-model:
+      api-key: sk-mdxbjywnxlngogjkozlvjealxtrdbqxbikvcobxhraabyosa
+      base-url: https://api.siliconflow.cn/v1
+      model-name: BAAI/bge-m3

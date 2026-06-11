@@ -2,18 +2,25 @@ package com.example.demo.common.utils;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
 import java.util.Base64;
 import java.util.Date;
 import java.util.Map;
 
+
+@Component
 public class JwtUtil {
-    private  static final String SECRET = "Ym9sdC1mcmVlLXNlY3VyZS1hdXRoLWZvci1iaW4tZGV2ZWxvcG1lbnQ=";
+
+    @Value("${jwt.secret}")
+    private   String secret ;
     private  static  final long EXPIRE_TIME = 3600 * 1000;
 
-    public static String createToken(Map<String, Object> claims, String subject){
-        SecretKeySpec key = new SecretKeySpec(Base64.getDecoder().decode(SECRET), "HmacSHA256");
+
+    public  String createToken(Map<String, Object> claims, String subject){
+        SecretKeySpec key = new SecretKeySpec(Base64.getDecoder().decode(secret), "HmacSHA256");
 
         return Jwts.builder()
                 .setClaims(claims)      // 放入租户ID、用户ID等负载
